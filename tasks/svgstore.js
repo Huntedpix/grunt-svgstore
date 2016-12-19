@@ -74,7 +74,8 @@ module.exports = function (grunt) {
       fixedSizeVersion: false,
       externalDefs: false,
       includeTitleElement: true,
-      preserveDescElement: true
+      preserveDescElement: true,
+      AllowDuplicateItems: false
     });
 
     var cleanupAttributes = [];
@@ -89,6 +90,7 @@ module.exports = function (grunt) {
       var $resultDocument = cheerio.load('<svg><defs></defs></svg>', { xmlMode: true }),
           $resultSvg = $resultDocument('svg'),
           $resultDefs = $resultDocument('defs').first(),
+          fileSrc = (options.AllowDuplicateItems ? file.orig.src : file.src),
           iconNameViewBoxArray = [];  // Used to store information of all icons that are added
                                       // { name : '' }
 
@@ -97,7 +99,7 @@ module.exports = function (grunt) {
         $resultSvg.attr(attr, options.svg[attr]);
       }
 
-      file.src.filter(function (filepath) {
+      fileSrc.filter(function (filepath) {
         if (!grunt.file.exists(filepath)) {
           grunt.log.warn('File "' + filepath + '" not found.');
           return false;
@@ -328,7 +330,7 @@ module.exports = function (grunt) {
 
           $symbolFixed
             .find('use')
-            .attr('xlink:href', '#' + graphicId)
+            .attr('xlink:href', '#' + fixedId)
             .attr('transform', [
               'scale(' + parseFloat(scale.toFixed(options.fixedSizeVersion.maxDigits.scale || 4)).toPrecision() + ')',
               'translate(' + [
