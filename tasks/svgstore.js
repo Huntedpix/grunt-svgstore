@@ -72,7 +72,7 @@ module.exports = function (grunt) {
       externalDefs: false,
       includeTitleElement: true,
       preserveDescElement: true,
-      AllowDuplicateItems: false
+      allowDuplicateItems: false
     });
 
     var cleanupAttributes = [];
